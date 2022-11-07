@@ -1,10 +1,5 @@
 #include <kipr/wombat.h>
-//zervos: 100-1900 cuz u dont wanna stress the zervo. plugged into port 0
-//be on the left side of the line
 //VARIABLES
-// 1000-1900
-// light sensor: <1000 for not black line and >1000 for black line
-// when on the line, turn left. when off the line, turn right
 int lmotor = 3; // left motor is plugged into port #3
 int rmotor = 0; // right motor is plugged into port #0
 int minipause = 500; // used to make the servo wait half a second after waving left
@@ -20,8 +15,8 @@ int bottom_IR = 5; // top hat sensor is plugged into analog port #5
 int target = 2900; // sensor value for when robot is very close to wall and done following the line
 //DECLARE FUNCTIONS
 void servo_wave(); // function to make the zervo wave left and right
-void right_turn(); // function to turn right
-void left_turn(); // function to turn left
+void right_turn(); // function to make a right pivotal turn
+void left_turn(); // function to make a left pivotal turn
 int main()
 {
   enable_servos(); // enables the servos, allowing them to move
