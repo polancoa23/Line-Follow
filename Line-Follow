@@ -1,0 +1,64 @@
+#include <kipr/wombat.h>
+//zervos: 100-1900 cuz u dont wanna stress the zervo. plugged into port 0
+//be on the left side of the line
+//VARIABLES
+// 1000-1900
+// light sensor: <1000 for not black line and >1000 for black line
+// when on the line, turn left. when off the line, turn right
+int lmotor = 3; // left motor is plugged into port #3
+int rmotor = 0; // right motor is plugged into port #0
+int minipause = 500; // used to make the servo wait half a second after waving left
+int pause = 1000; // used to make the servo wait a second after waving right
+int line = 1500; // any sensor value 1500 or above indicates the value of the black line
+int left = 1000; // the zervo value for the left wave position
+int right = 1900; // the zervo value for the right wave position
+int lspeed = 50; // left motor goes at 50% speed 
+int rspeed = 55; // right motor goes at 55% speed since it's a little slower than the left
+int nospeed = 0; // used for when the left/right motor need to stay still
+int front_IR = 0; // front range finer is plugged into analog port #0
+int bottom_IR = 5; // top hat sensor is plugged into analog port #5
+int target = 2900; // sensor value for when robot is very close to wall and done following the line
+//DECLARE FUNCTIONS
+void servo_wave(); // function to make the zervo wave left and right
+void right_turn(); // function to turn right
+void left_turn(); // function to turn left
+int main()
+{
+  enable_servos(); // enables the servos, allowing them to move
+  while(analog(front_IR) <= target){ // while the robot is not close enough to the wall at the end of the line it will perform the following:
+      if(analog(bottom_IR) < line){ // if the robot is not on the line it will perform the following:
+         left_turn(); // turn left
+      }
+      else{ // if the robot is on the line it will perform the following:
+         right_turn(); // turn right
+      }    
+  }
+  ao(); // shut down the motors
+  int count = 0; // # of times the robot has waved
+  while(count <= 5){ // while the # of times the robot has waved is less than 6, it will perform the following: (wave 6 times)
+      servo_wave(); // wave left and right once
+      count++; // # of times the robot has waved goes up by 1
+  }
+  printf("Waved 6 times!\n"); //says that the robot has waved 6 times
+  disable_servos(); // disables the servos, not allowing them to move anymore
+  return 0;
+}
+
+void servo_wave(){
+  set_servo_position(0,left); // move the servo to the left side(left wave)
+  msleep(minipause); // wait half a second
+  set_servo_position(0,right); // move the servo to the right side(right wave)
+  msleep(pause); // wait a second
+}
+  
+void left_turn(){
+    motor(lmotor, nospeed); // left motor stays still
+    motor(rmotor, rspeed); // right motor moves at 55% speed, making a left turn
+    printf("Off the line, turning left/n"); // says that it's on the line and that it's turning left
+}
+
+void right_turn(){
+    motor(lmotor, lspeed); // left motor moves at 50% speed
+    motor(rmotor, nospeed); // right motor stays still, making  a right turn
+    printf("On the line, turning right/n"); // says that it's off the line and that it's turning right
+}
