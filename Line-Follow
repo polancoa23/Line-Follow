@@ -2,6 +2,7 @@
 //VARIABLES
 int lmotor = 3; // left motor is plugged into port #3
 int rmotor = 0; // right motor is plugged into port #0
+int servo = 0; // servo is plugged into port #0
 int minipause = 500; // used to make the servo wait half a second after waving left
 int pause = 1000; // used to make the servo wait a second after waving right
 int line = 1500; // any sensor value 1500 or above indicates the value of the black line
@@ -40,9 +41,9 @@ int main()
 }
 
 void servo_wave(){
-  set_servo_position(0,left); // move the servo to the left side(left wave)
+  set_servo_position(servo,left); // move the servo to the left side(left wave)
   msleep(minipause); // wait half a second
-  set_servo_position(0,right); // move the servo to the right side(right wave)
+  set_servo_position(servo,right); // move the servo to the right side(right wave)
   msleep(pause); // wait a second
 }
   
